@@ -12,11 +12,17 @@ import { ContactsProvider } from "./contexts/ContactContext";
 // import useSocket from "./hooks/useSocket";
 
 // Lazy loading to be implemented later here, tomorrow.
-const Homepage = lazy(() => import("./pages/Homepage"));
-const Login = lazy(() => import("./pages/Login"));
-const Signup = lazy(() => import("./pages/Signup"));
-const ProfilePage = lazy(() => import("./pages/ProfilePage"));
-const ProtectRoute = lazy(() => import("./pages/ProtectRoute"));
+// const Homepage = lazy(() => import("./pages/Homepage"));
+// const Login = lazy(() => import("./pages/Login"));
+// const Signup = lazy(() => import("./pages/Signup"));
+// const ProfilePage = lazy(() => import("./pages/ProfilePage"));
+// const ProtectRoute = lazy(() => import("./pages/ProtectRoute"));
+
+import Homepage from "./pages/Homepage";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import ProfilePage from "./pages/ProfilePage";
+import ProtectRoute from "./pages/ProtectRoute";
 
 import SpinnerFullPage from "./ui/SpinnerFullPage";
 
