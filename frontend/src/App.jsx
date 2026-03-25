@@ -12,7 +12,7 @@ import { ContactsProvider } from "./contexts/ContactContext";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
-// import Homepage from "./pages/Homepage.jsx";
+import HomePage2 from "./pages/HomePage2.jsx";
 import ProtectRoute from "./pages/ProtectRoute.jsx";
 
 import SpinnerFullPage from "./ui/SpinnerFullPage.jsx";
@@ -26,7 +26,7 @@ const queryClient = new QueryClient({
 });
 
 const App = () => {
-  const { checkAuth, isCheckingAuth } = useAuthStore();
+  const { checkAuth, isCheckingAuth, authUser } = useAuthStore();
 
   useEffect(() => {
     checkAuth();
@@ -44,14 +44,14 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             <Route index path="/login" element={<Login />} />
-            {/* <Route
+            <Route
               path={`/chats/${authUser?.userName}`}
               element={
                 <ProtectRoute>
-                  <Homepage />
+                  <HomePage2 />
                 </ProtectRoute>
               }
-            /> */}
+            />
             <Route path="/signup" element={<Signup />} />
 
             <Route
