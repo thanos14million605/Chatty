@@ -1,24 +1,94 @@
-import { useChatStore } from "../store/useChatStore";
+import React, { useContext, useEffect } from "react";
 
-import Sidebar from "../components/Sidebar";
-import NoChatSelected from "../components/NoChatSelected";
-import ChatContainer from "../components/ChatContainer";
+import MessageWindow from "../features/messages/MessageWindow";
+import ChatList from "../features/messages/ChatList";
+import Navbar from "../ui/Navbar";
+import SpinnerFullPage from "../ui/SpinnerFullPage";
 
-const HomePage = () => {
-  const { selectedUser } = useChatStore();
+import { FaMessage } from "react-icons/fa6";
+
+import useAuthStore from "../store/useAuthStore";
+import useSocket from "../hooks/useSocket";
+import { ContactsContext } from "../contexts/ContactContext";
+import { useQueryClient } from "@tanstack/react-query";
+import socket from "../socket/socket";
+import notificationSound from "./../assets/alert.mp3";
+
+const Homepage = () => {
+  const { isLoggingOut, authUser } = useAuthStore();
+  const { selectedContactId } = useContext(ContactsContext);
+  useSocket(authUser ? authUser?._id : null);
+
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    socket.on("newMessage", ({ senderId }) => {
+      const alert = new Audio(notificationSound);
+      alert.play();
+
+      queryClient.invalidateQueries({ queryKey: [`messages-${senderId}`] });
+      queryClient.invalidateQueries({ queryKey: ["contacts"] });
+    });
+
+    return () => {
+      socket.off("newMessage");
+    };
+  }, [queryClient]);
+
+  useEffect(() => {
+    socket.on("newUserJoined", () => {
+      queryClient.invalidateQueries({
+        queryKey: ["contacts"],
+      });
+    });
+
+    return () => socket.off("newUserJoined");
+  }, [queryClient]);
+
+  useEffect(() => {
+    socket.on("messageDeleted", ({ senderId }) => {
+      queryClient.invalidateQueries({
+        queryKey: [`messages-${senderId}`],
+      });
+      queryClient.invalidateQueries({ queryKey: ["contacts"] });
+    });
+
+    return () => socket.off("messageDeleted");
+  }, [queryClient]);
+
+  if (isLoggingOut) return <SpinnerFullPage />;
 
   return (
-    <div className="h-screen bg-base-200">
-      <div className="flex items-center justify-center pt-20 px-4">
-        <div className="bg-base-100 rounded-lg shadow-cl w-full max-w-6xl h-[calc(100vh-8rem)]">
-          <div className="flex h-full rounded-lg overflow-hidden">
-            <Sidebar />
+    <div className="min-h-screen bg-[#0a1122] text-white">
+      <Navbar />
+      <div className="flex h-[calc(100vh-64px)] overflow-hidden">
+        <div
+          className={`w-full md:w-[30%] ${
+            selectedContactId ? "hidden md:block" : "block"
+          }`}
+        >
+          <ChatList />
+        </div>
 
-            {!selectedUser ? <NoChatSelected /> : <ChatContainer />}
-          </div>
+        <div
+          className={`w-full md:w-[70%] ${
+            selectedContactId ? "block" : "hidden md:block"
+          }`}
+        >
+          {!selectedContactId ? (
+            <div className="h-full flex flex-col gap-3 items-center justify-center">
+              <FaMessage className="text-5xl text-amber-400" />
+              <p className="text-slate-400 text-xl">
+                Select a chat to start messaging
+              </p>
+            </div>
+          ) : (
+            <MessageWindow />
+          )}
         </div>
       </div>
     </div>
   );
 };
-export default HomePage;
+
+export default Homepage;

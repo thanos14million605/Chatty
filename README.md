@@ -1,151 +1,200 @@
-## 💬 About Chatty
+# ✨ Chatty — Real-Time Chat Application
 
-**Chatty** is a modern full-stack real-time chat application built using the **MERN Stack (MongoDB, Express, React, Node.js)** with **Socket.IO** for instant messaging.
+Chatty is a full-stack, real-time chat application built with **Node.js**, **Express**, **MongoDB**, **React**, and **Socket.IO**.  
+It enables users to send and receive messages instantly, view online statuses, manage their profiles, and enjoy a seamless chat experience with smart caching and synchronization.
 
-It provides seamless communication with real-time updates, authentication, and a clean, responsive UI.
-
-![Demo App](./frontend/public/Chatty.png)
-
----
+## ![Demo App](./frontend/src/assets/Chatty.png)
 
 ## 🚀 Features
 
 ### 🔐 Authentication & Authorization
 
-- User Signup & Login
-- Secure JWT-based authentication
-- Protected routes
-- Persistent login sessions
+- Secure **JWT-based authentication** (access + refresh tokens)
+- **Role-based route protection** using middleware
+- Persistent login via **HttpOnly cookies**
+
+---
 
 ### 💬 Real-Time Messaging
 
-- Instant messaging using Socket.IO
-- Real-time message updates
-- One-to-one chat functionality
-- Online/offline user status
+- **Socket.IO** for instant message delivery
+- Live message updates without refresh
+- Real-time conversation sync across users
 
-### 👤 User Profile
+---
 
-- Update profile picture
-- Cloudinary image uploads
-- View user details
+### ⚡ Data Fetching & Caching
 
-### ⚡ State Management
+- **React Query (TanStack Query)** for efficient data handling
+- Automatic cache updates when messages change
+- Optimistic UI updates for smooth experience
 
-- Global state using Zustand
-- Scalable frontend state handling
+---
 
-### 🎨 UI/UX
+### 📨 Message Management
 
-- Fully responsive design
-- Built with TailwindCSS & DaisyUI
-- Clean and modern interface
+- Full **CRUD operations**:
+  - Send text and image messages
+  - Soft delete messages with timestamps
+  - Update messages (optional)
+  - Paginated message history
+- **Cloudinary integration** for image uploads
 
-### 🛠️ Backend Features
+---
 
-- RESTful API design
-- Error handling (client + server)
-- MongoDB data modeling
-- Secure password hashing
+### 🟢 Online Status & Live Updates
+
+- Real-time online/offline tracking via Socket.IO
+- Dynamic “online” indicators
+- Automatic removal of disconnected users
+
+---
+
+### 👤 User & Profile Management
+
+- Signup, login, and logout
+- Update profile picture (Cloudinary)
+- Edit user details
+
+---
+
+### 📄 Pages
+
+- **Login / Signup** – Secure authentication
+- **Home** – Chat interface with messages and online users
+- **Profile** – Manage user info and avatar
 
 ---
 
 ## 🏗️ Tech Stack
 
-### Frontend
+### 🎨 Frontend
 
-- ⚛️ React (Vite)
-- 🎨 Tailwind CSS
-- 🌼 Daisy UI
-- 🧠 Zustand
-- 📡 Axios
+- ⚛️ React + Vite
 - 🔌 Socket.IO Client
+- ⚡ React Query (TanStack Query)
+- 🧠 Zustand (global state)
+- 🎨 Tailwind CSS
+- 🔔 Audio notifications
 
-### Backend
+---
 
-- 🟢 Node.js
-- 🚀 Express.js
-- 🍃 MongoDB
+### 🛠️ Backend
+
+- 🟢 Node.js + Express
+- 🍃 MongoDB + Mongoose
 - 🔐 JWT Authentication
-- 🔑 bcryptjs
 - ☁️ Cloudinary
-- 🔌 Socket.IO
-
-### Deployment
-
-- ☁️ Render
+- 🔌 Socket.IO Server
 
 ---
 
----
+## 🔐 Environment Variables
+
+### Create a `config.env` file in your backend folder:
+
+`
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+CLOUDINARY_CLOUD_NAME=
+
+JWT_COOKIE_EXPIRES_IN=7
+JWT_SECRET=your_super_secret_key
+JWT_SECRET_EXPIRES_IN=7d
+
+MONGO_URI=
+
+NODE_ENV=development
+PORT=5000
+`
 
 ## ⚙️ Installation & Setup
 
-### 1️⃣ Clone the Repository
+### 1️⃣ Clone Repository
 
-```bash
+```
 git clone https://github.com/thanos14million605/Chatty.git
 cd chatty
 ```
 
-## Installing Dependencies
+## 2️⃣ Install Dependencies
 
-## Backend
+### Backend
 
-```bash
+```
 cd backend
 npm install
 ```
 
-## Frontend
+### Frontend
 
-```bash
+```
 cd frontend
 npm install
 ```
 
-## Enivironment Variable Setup
+## ▶️ Running the Application
 
-### Create a .env file in backend folder
+### Start Backend
 
-MONGO_URI=....
-PORT=...
-JWT_SECRET=...
-
-CLOUDINARY_CLOUD_NAME=...
-CLOUDINARY_API_KEY=...
-CLOUDINARY_API_SECRET=...
-
-NODE_ENV=development
-
-### ▶️ Running the Application
-
-## Start Backend
-
-```bash
+```
 cd backend
-npm run dev
+npm run server
 ```
 
-# Backend runs at:
+### Start Frontend
 
-`http://localhost:PORT`
-
-## Start Frontend
-
-```bash
+```
 cd frontend
-npm run dev
+npm run client
 ```
 
-# Frontend runs at:
+## 🚀 Deployment
 
-`http://localhost:5173`
+### Deployed on Render
 
-## 🔄 Build for Production
+- Add environment variables in Render dashboard
+- Set build & start commands respectively as follows:
 
-```bash
+```
 npm run build
+npm run start
 ```
 
-### Built with determination 💪 by Ebrima Gajaga
+## 🔄 Core Workflow
+
+1. **User signs up / logs in**
+2. **JWT token** is issued
+3. **Socket.IO** connection is established
+4. **Messages** are sent & received instantly
+5. **Online users** are tracked dynamically
+
+## 🔒 Security
+
+Password hashing for user credentials
+JWT-based authentication system
+Secure cookies for session persistence
+Environment variables for sensitive data
+
+## 🧠 Key Learnings
+
+1. **Building scalable real-time systems** with Socket.IO
+2. **Managing server-client synchronization**
+3. **Efficient state management** with Zustand & React Query
+4. **Secure authentication** implementation
+5. **Full-stack** deployment workflow
+
+## 👨🏽‍💻 Author
+
+`Ebrima Gajaga`
+
+## 🔗 GitHub:
+
+https://github.com/thanos14million605
+
+## ❤️ Acknowledgements
+
+1. **Inspired by** modern chat applications
+2. **Built as part of my final semester internship in India**
+
+## Built with love ❤️ using the MERN stack and Socket.IO

@@ -1,52 +1,76 @@
-import Navbar from "./components/Navbar";
+import React, { lazy, Suspense, useEffect } from "react";
 
-import HomePage from "./pages/HomePage";
-import SignUpPage from "./pages/SignUpPage";
-import LoginPage from "./pages/LoginPage";
-import SettingsPage from "./pages/SettingsPage";
-import ProfilePage from "./pages/ProfilePage";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-import { Routes, Route, Navigate } from "react-router-dom";
-import { useAuthStore } from "./store/useAuthStore";
-import { useThemeStore } from "./store/useThemeStore";
-import { useEffect } from "react";
-
-import { Loader } from "lucide-react";
 import { Toaster } from "react-hot-toast";
 
-const App = () => {
-  const { authUser, checkAuth, isCheckingAuth, onlineUsers } = useAuthStore();
-  const { theme } = useThemeStore();
+import useAuthStore from "./store/useAuthStore";
+import { ContactsProvider } from "./contexts/ContactContext";
 
-  console.log({ onlineUsers });
+// import useSocket from "./hooks/useSocket";
+
+// Lazy loading to be implemented later here, tomorrow.
+const Homepage = lazy(() => import("./pages/Homepage"));
+const Login = lazy(() => import("./pages/Login"));
+const Signup = lazy(() => import("./pages/Signup"));
+const ProfilePage = lazy(() => import("./pages/ProfilePage"));
+const ProtectRoute = lazy(() => import("./pages/ProtectRoute"));
+
+import SpinnerFullPage from "./ui/SpinnerFullPage";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 0,
+    },
+  },
+});
+
+const App = () => {
+  const { checkAuth, isCheckingAuth, authUser } = useAuthStore();
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
 
-  console.log({ authUser });
-
-  if (isCheckingAuth && !authUser)
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Loader className="size-10 animate-spin" />
-      </div>
-    );
+  if (isCheckingAuth) {
+    return <SpinnerFullPage />;
+  }
 
   return (
-    <div data-theme={theme}>
-      <Navbar />
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
+      <Suspense fallback={<SpinnerFullPage />} />
+      <ContactsProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route index path="/login" element={<Login />} />
+            <Route
+              path={`/chats/${authUser?.userName}`}
+              element={
+                <ProtectRoute>
+                  <Homepage />
+                </ProtectRoute>
+              }
+            />
+            <Route path="/signup" element={<Signup />} />
 
-      <Routes>
-        <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login" />} />
-        <Route path="/signup" element={!authUser ? <SignUpPage /> : <Navigate to="/" />} />
-        <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/" />} />
-        <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
-      </Routes>
-
-      <Toaster />
-    </div>
+            <Route
+              path="/profile/:userName/:userId"
+              element={
+                <ProtectRoute>
+                  <ProfilePage />
+                </ProtectRoute>
+              }
+            />
+          </Routes>
+        </BrowserRouter>
+        <Toaster position="top-center" reverseOrder={false} />
+      </ContactsProvider>
+    </QueryClientProvider>
   );
 };
+
 export default App;
