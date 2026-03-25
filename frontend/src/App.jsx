@@ -9,15 +9,6 @@ import { Toaster } from "react-hot-toast";
 import useAuthStore from "./store/useAuthStore";
 import { ContactsProvider } from "./contexts/ContactContext";
 
-// import useSocket from "./hooks/useSocket";
-
-// Lazy loading to be implemented later here, tomorrow.
-// const Homepage = lazy(() => import("./pages/Homepage"));
-// const Login = lazy(() => import("./pages/Login"));
-// const Signup = lazy(() => import("./pages/Signup"));
-// const ProfilePage = lazy(() => import("./pages/ProfilePage"));
-// const ProtectRoute = lazy(() => import("./pages/ProtectRoute"));
-
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
