@@ -93,7 +93,7 @@ It enables users to send and receive messages instantly, view online statuses, m
 
 ### Create a `config.env` file in your backend folder:
 
-`
+```
 CLOUDINARY_API_KEY=
 CLOUDINARY_API_SECRET=
 CLOUDINARY_CLOUD_NAME=
@@ -106,7 +106,7 @@ MONGO_URI=
 
 NODE_ENV=development
 PORT=5000
-`
+```
 
 ## ⚙️ Installation & Setup
 
