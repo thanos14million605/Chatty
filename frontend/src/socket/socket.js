@@ -1,8 +1,10 @@
 import { io } from "socket.io-client";
 
-const isProduction = false;
+const isProduction = true;
 
-const baseURL = isProduction ? "deployment-url" : "http://localhost:5000";
+const baseURL = isProduction
+  ? "https://chatty-mb1r.onrender.com"
+  : "http://localhost:5000";
 
 const socket = io(baseURL, {
   transports: ["websocket"],
