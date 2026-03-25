@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const isProduction = true;
+const isProduction = false;
 
 const baseURL = isProduction
   ? "https://chatty-mb1r.onrender.com"
