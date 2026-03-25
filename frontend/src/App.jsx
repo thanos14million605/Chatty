@@ -18,11 +18,11 @@ import { ContactsProvider } from "./contexts/ContactContext";
 // const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 // const ProtectRoute = lazy(() => import("./pages/ProtectRoute"));
 
-import Homepage from "./pages/Homepage";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import ProfilePage from "./pages/ProfilePage";
-import ProtectRoute from "./pages/ProtectRoute";
+import Homepage from "./pages/Homepage.jsx";
+import Login from "./pages/Login.jsx";
+import Signup from "./pages/Signup.jsx";
+import ProfilePage from "./pages/ProfilePage.jsx";
+import ProtectRoute from "./pages/ProtectRoute.jsx";
 
 import SpinnerFullPage from "./ui/SpinnerFullPage";
 
